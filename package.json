@@ -6,12 +6,24 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "seed": "node seed.js"
+    "seed": "node seed.js",
+    "test": "npm run test:api:served && npm run test:e2e",
+    "test:api": "vitest run",
+    "test:api:watch": "vitest",
+    "test:unit": "vitest run tests/unit",
+    "test:api:served": "start-server-and-test start http://localhost:3000/api-docs.json \"vitest run\"",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "express": "^4.18.3",
     "sql.js": "^1.12.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "start-server-and-test": "^2.0.8",
+    "vitest": "^2.1.4"
   }
 }
