@@ -5,6 +5,7 @@ module.exports = defineConfig({
     globals: true,
     include: [
       'tests/api/**/*.test.js',
+      'tests/integration/**/*.test.js',
       'tests/unit/**/*.test.js'
     ],
     reporters: ['default', 'junit'],

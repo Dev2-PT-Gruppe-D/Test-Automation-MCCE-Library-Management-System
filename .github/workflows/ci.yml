@@ -35,6 +35,9 @@ jobs:
       - name: API tests
         run: npm run test:api:served
 
+      - name: Integration tests
+        run: npm run test:integration:served
+
       - name: E2E tests
         run: npm run test:e2e
 
