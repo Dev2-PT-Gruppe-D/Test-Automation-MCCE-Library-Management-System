@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -25,6 +25,9 @@ jobs:
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
+
+      - name: Unit tests
+        run: npm run test:unit
 
       - name: E2E tests
         run: npm run test:e2e
@@ -35,5 +38,6 @@ jobs:
         with:
           name: test-results
           path: |
+            test-results/
             playwright-report/
           retention-days: 14
