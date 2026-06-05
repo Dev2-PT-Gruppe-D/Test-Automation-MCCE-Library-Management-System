@@ -172,3 +172,84 @@ It describes your group's assigned domain, the business rules you must cover, an
 ├── seed.js                 # Database seeding script
 └── package.json
 ```
+
+---
+
+# Test Automation Suite
+
+This repository also contains a automated test suite. 
+
+## Tooling
+
+| Layer | Tool | Why |
+|-------|------|-----|
+| API / integration / unit | [Vitest](https://vitest.dev/) | Fast, native ESM, built-in JUnit reporter |
+| UI / E2E | [Playwright](https://playwright.dev/) | Robust browser automation, HTML + JUnit reports, auto-starts the SUT |
+| HTTP client | native `fetch` (`helpers/client.js`) | No extra dependency; uniform `{ status, body, headers }` |
+| Server orchestration | [start-server-and-test](https://github.com/bahmutov/start-server-and-test) | Boots the SUT, waits, runs tests, shuts down |
+| CI/CD | GitHub Actions (`.github/workflows/ci.yml`) | Runs on every push to `main`/`master` |
+
+## Prerequisites
+
+- First E2E run only: `npx playwright install --with-deps chromium`
+
+## Running the tests
+
+```bash
+# 1. Install everything
+npm install
+
+# Unit tests — in-process, no server needed
+npm run test:unit
+
+# API tests — auto-start & stop the SUT
+npm run test:api:served
+
+# Integration tests — auto-start & stop the SUT
+npm run test:integration:served
+
+# E2E / UI tests — Playwright seeds & starts its own SUT instance
+npm run test:e2e
+
+# Everything, in order: unit → API → integration → E2E
+npm test
+```
+
+### Running a single test or group
+
+```bash
+# One file
+npx vitest run tests/api/books.create.api.test.js
+
+# Tests whose name matches a pattern
+npx vitest run -t "duplicate"
+
+# By level (the :served variants start the SUT themselves)
+npm run test:unit
+npm run test:api           # needs a running server, or use test:api:served
+npm run test:integration   # needs a running server, or use test:integration:served
+
+# One E2E spec
+npx playwright test tests/e2e/books.crud.e2e.test.js
+```
+
+### Reading the report
+
+- **Vitest** writes one JUnit file per level: `test-results/unit-junit.xml`,
+  `api-junit.xml`, and `integration-junit.xml`.
+- **Playwright** writes `test-results/playwright-junit.xml` and a browsable HTML
+  report to `playwright-report/` — open it with `npx playwright show-report`.
+- In CI all are uploaded as the **`test-results`** build artefact.
+
+## Test architecture
+
+```
+tests/
+├── api/          # HTTP endpoint + business-rule tests (Vitest)
+├── integration/  # multi-domain scenarios (Vitest)
+├── unit/         # in-process unit tests (Vitest)
+└── e2e/          # browser tests against the web UI (Playwright)
+helpers/
+├── client.js     # black-box HTTP client
+└── factories.js  # unique fixtures for books/members/loans/reservations
+```
