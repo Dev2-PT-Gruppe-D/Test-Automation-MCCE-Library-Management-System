@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { uniqueIsbn, createBook } = require('../../helpers/factories');
+const { uniqueIsbn, uniqueTitle, createBook } = require('../../helpers/factories');
 
 test.describe('Books — UI CRUD', () => {
   test.beforeEach(async ({ page }) => {
@@ -8,7 +8,7 @@ test.describe('Books — UI CRUD', () => {
   });
 
   test('E2E-G1-01: add a book via the form (positive)', async ({ page }) => {
-    const title = `E2E Add ${Date.now()}`;
+    const title = uniqueTitle('E2E Add');
 
     await page.getByPlaceholder('ISBN (10 or 13 digits)').fill(uniqueIsbn());
     await page.getByPlaceholder('Title').fill(title);
@@ -34,7 +34,7 @@ test.describe('Books — UI CRUD', () => {
   });
 
   test('E2E-G1-03: edit a book and persist the change', async ({ page }) => {
-    const original = `E2E Edit ${Date.now()}`;
+    const original = uniqueTitle('E2E Edit');
     const updated = `${original} (updated)`;
     await createBook({ title: original, author: 'Before' });
 
@@ -50,7 +50,7 @@ test.describe('Books — UI CRUD', () => {
   });
 
   test('E2E-G1-04: delete a book via the detail view', async ({ page }) => {
-    const title = `E2E Delete ${Date.now()}`;
+    const title = uniqueTitle('E2E Delete');
     await createBook({ title });
 
     await page.reload();
@@ -65,7 +65,7 @@ test.describe('Books — UI CRUD', () => {
   });
 
   test('E2E-G1-10: full lifecycle — add → view → edit → delete', async ({ page }) => {
-    const title = `E2E Lifecycle ${Date.now()}`;
+    const title = uniqueTitle('E2E Lifecycle');
     const renamed = `${title} (renamed)`;
 
     await page.getByPlaceholder('ISBN (10 or 13 digits)').fill(uniqueIsbn());

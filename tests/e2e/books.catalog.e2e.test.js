@@ -1,5 +1,5 @@
 const { test, expect } = require('@playwright/test');
-const { uniqueIsbn, createBook } = require('../../helpers/factories');
+const { uniqueIsbn, uniqueTitle, createBook } = require('../../helpers/factories');
 
 const currentYear = new Date().getFullYear();
 
@@ -10,7 +10,7 @@ test.describe('Books — catalog UI', () => {
   });
 
   test('E2E-G1-05: filter the catalog table by title', async ({ page }) => {
-    const title = `E2E Filter ${Date.now()}`;
+    const title = uniqueTitle('E2E Filter');
     await createBook({ title });
     await page.reload();
 
@@ -27,7 +27,7 @@ test.describe('Books — catalog UI', () => {
     await page.reload();
 
     await page.getByPlaceholder('ISBN (10 or 13 digits)').fill(isbn);
-    await page.getByPlaceholder('Title').fill(`Dup ${Date.now()}`);
+    await page.getByPlaceholder('Title').fill(uniqueTitle('Dup'));
     await page.getByPlaceholder('Author').fill('E2E Author');
     await page.getByPlaceholder('Year').fill('2010');
     await page.getByRole('button', { name: 'Add Book' }).click();
@@ -37,7 +37,7 @@ test.describe('Books — catalog UI', () => {
 
   test('E2E-G1-07: future publication year is rejected in the form', async ({ page }) => {
     await page.getByPlaceholder('ISBN (10 or 13 digits)').fill(uniqueIsbn());
-    await page.getByPlaceholder('Title').fill(`Future ${Date.now()}`);
+    await page.getByPlaceholder('Title').fill(uniqueTitle('Future'));
     await page.getByPlaceholder('Author').fill('E2E Author');
     await page.getByPlaceholder('Year').fill(String(currentYear + 1));
     await page.getByRole('button', { name: 'Add Book' }).click();
@@ -46,7 +46,7 @@ test.describe('Books — catalog UI', () => {
   });
 
   test('E2E-G1-08: availability column reflects the copy count on add', async ({ page }) => {
-    const title = `E2E Avail ${Date.now()}`;
+    const title = uniqueTitle('E2E Avail');
     await page.getByPlaceholder('ISBN (10 or 13 digits)').fill(uniqueIsbn());
     await page.getByPlaceholder('Title').fill(title);
     await page.getByPlaceholder('Author').fill('E2E Author');
@@ -60,7 +60,7 @@ test.describe('Books — catalog UI', () => {
   });
 
   test('E2E-G1-09: editing total copies updates the available-copies display', async ({ page }) => {
-    const title = `E2E Copies ${Date.now()}`;
+    const title = uniqueTitle('E2E Copies');
     await createBook({ title, totalCopies: 2 });
     await page.reload();
 

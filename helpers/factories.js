@@ -26,6 +26,11 @@ function uniqueEmail(prefix = 'member') {
   return `${prefix}_${Date.now().toString(36)}_${nextSeq()}@example.com`;
 }
 
+/** A unique, human-readable title */
+function uniqueTitle(prefix = 'Book') {
+  return `${prefix} ${Date.now().toString(36)}${Math.random().toString(36).slice(2, 7)}`;
+}
+
 // ── plain bodies (no HTTP) — handy for negative/validation tests ───────────────
 
 function bookBody(overrides = {}) {
@@ -103,6 +108,7 @@ module.exports = {
   uniqueIsbn,
   uniqueIsbn10,
   uniqueEmail,
+  uniqueTitle,
   bookBody,
   memberBody,
   createBook,
