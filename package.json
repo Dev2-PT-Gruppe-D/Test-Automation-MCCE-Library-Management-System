@@ -7,9 +7,12 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "seed": "node seed.js",
-    "test": "npm run test:unit && npm run test:e2e",
+    "test": "npm run test:unit && npm run test:api:served && npm run test:e2e",
     "test:unit": "vitest run tests/unit --outputFile.junit=test-results/unit-junit.xml",
     "test:unit:watch": "vitest tests/unit",
+    "test:api": "vitest run tests/api --outputFile.junit=test-results/api-junit.xml",
+    "test:api:watch": "vitest tests/api",
+    "test:api:served": "start-server-and-test start http://localhost:3000/api-docs.json \"npm run test:api\"",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui"
   },

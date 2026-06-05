@@ -29,6 +29,12 @@ jobs:
       - name: Unit tests
         run: npm run test:unit
 
+      - name: Seed database
+        run: npm run seed
+
+      - name: API tests
+        run: npm run test:api:served
+
       - name: E2E tests
         run: npm run test:e2e
 
