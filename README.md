@@ -31,7 +31,7 @@ No database server, no Docker, no Python required.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/horvathkevin/FHB-MCCE-Library-Management-System-Student.git
+git clone https://github.com/Dev2-PT-Gruppe-D/Test-Automation-MCCE-Library-Management-System
 cd FHB-MCCE-Library-Management-System-Student
 
 # 2. Install dependencies
@@ -177,7 +177,7 @@ It describes your group's assigned domain, the business rules you must cover, an
 
 # Test Automation Suite
 
-This repository also contains a automated test suite. 
+This repository also contains an automated test suite. 
 
 ## Tooling
 
